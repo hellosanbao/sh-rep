@@ -3,7 +3,7 @@
 ## 安装
 
 ```bash
-$ npm i super-poster
+$ npm i @sh-rep/super-poster
 ```
 
 ## 起步
@@ -17,7 +17,7 @@ $ npm i super-poster
 绘制 canvas 海报
 
 ```js
-import { getPoster } from "super-poster";
+import { getPoster } from "@sh-rep/super-poster";
 let json = {
   width: 750, //画布宽度
   height: 1125, //画布高度
