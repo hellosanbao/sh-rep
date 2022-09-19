@@ -12,14 +12,28 @@ export default {
   output: [
     {
       exports: "named",
+      file: resolve("./dist/es/index.js"),
+      format: "es",
+      name: "superPoster",
+    },
+    {
+      exports: "named",
+      file: resolve("./dist/global/index.js"),
+      format: "iife",
+      name: "superPoster",
+    },
+    {
+      exports: "named",
       file: resolve("./dist/index.js"),
       format: "cjs",
-      name: "super-poster",
+      name: "superPoster",
     },
   ],
   plugins: [
     json(),
-    ts(),
+    ts({
+      useTsconfigDeclarationDir: true,
+    }),
     commonjs(),
     nodeResolve(),
     babel({
