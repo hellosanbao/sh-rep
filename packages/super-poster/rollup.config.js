@@ -4,6 +4,7 @@ import babel from "@rollup/plugin-babel";
 import ts from "rollup-plugin-typescript2";
 import json from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import copy from "@guanghechen/rollup-plugin-copy";
 
 const resolve = (p) => path.resolve(__dirname, p);
 
@@ -40,6 +41,14 @@ export default {
       babelHelpers: "runtime",
       exclude: "node_modules/**",
       presets: [["@babel/preset-env"]],
+    }),
+    copy({
+      targets: [
+        {
+          src: ["src/components"],
+          dest: ["dist", "dist/es"],
+        },
+      ],
     }),
   ],
 };
