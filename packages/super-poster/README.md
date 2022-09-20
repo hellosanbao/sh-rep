@@ -8,6 +8,43 @@ $ npm i @sh-rep/super-poster
 
 ## 起步
 
+### 页面展示组件
+
+> 在 uniapp 中使用
+
+- 1、引入
+  在`pages.json`中添加 easycom
+
+```js
+{
+  "easycom":{
+		"PosterView":"@sh-rep/super-poster/dist/components/uni/posterView.vue"
+	}
+}
+```
+
+使用
+
+```html
+<!-- json为海报的配置json -->
+<PosterView :json="json" />
+```
+
+> 在 Taro 中使用
+
+```js
+import PosterView from '@sh-rep/super-poster/dist/components/taro/posterView';
+
+function TestCom(){
+  // json为海报的配置json
+  return <PosterView json={json} >
+}
+```
+
+### 生成海报
+
+> ps:一般是点击生成海报的时候再调用 getPoster，页面展示直接用 PosterView 组件即可
+
 首先需要再 template 中新增一个 canvas 组件
 
 ```html
@@ -46,39 +83,6 @@ let json = {
 getPoster(json).then((res) => {
   console.log(res.img);
 });
-```
-
-获取 renderdoms
-
-```js
-import { getPreview } from "super-poster";
-let json = {
-  width: 750, //画布宽度
-  height: 1125, //画布高度
-  displayWidth: 690, //展示宽度
-  ratio: 1.5, // 画笔缩放比
-  posterFileName: "poster1",
-  doms: [
-    {
-      type: "text", //dom类型
-      x: 0, //x坐标
-      y: 56, //y坐标
-      width: 750, //文本宽度
-      value: "宇宙最强最强的小分队", //文本内容
-      fontSize: 48, //字体大小
-      color: "#212224", //文本颜色
-      fontWeight: "bold", //字重
-      lineNum: 1, //行数
-      textAlign: "center", //左右对其方式
-      borderColor: "#000", //文字描边颜色
-      borderWidth: 0, //文字描边宽度
-      rotate: 0, //旋转角度
-      zIndex: 10,
-    },
-  ],
-};
-const domList = getPreview(json);
-console.log(domList); //可遍历渲染domlist以dom方式展示海报
 ```
 
 ## 配置
