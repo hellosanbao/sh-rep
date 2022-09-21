@@ -3,12 +3,33 @@
 ## 安装
 
 ```bash
+# 注意！原生小程序中安装后还需要在开发者工具中构建npm
 $ npm i @sh-rep/super-poster
 ```
 
 ## 起步
 
 ### 页面展示组件
+
+> 原生小程序
+
+- 引入
+  在页面配置 json 中加入组件引用
+
+```json
+{
+  "usingComponents": {
+    "PosterView": "@sh-rep/super-poster/components/mini/posterView/posterView"
+  }
+}
+```
+
+- 使用
+
+```html
+<!-- json为海报的配置json -->
+<PosterView json="{{json}}" />
+```
 
 > 在 uniapp 中使用
 
