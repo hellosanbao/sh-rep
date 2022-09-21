@@ -274,6 +274,9 @@ export default {
     return doms
       .map((dom: any) => {
         dom.zIndex = dom.zIndex || 0;
+        if (dom.doms.length) {
+          dom.doms = this.sortDoms(dom.doms);
+        }
         return dom;
       })
       .sort((a: any, b: any) => a.zIndex - b.zIndex);

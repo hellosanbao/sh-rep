@@ -941,6 +941,9 @@ var createHtml = {
         return doms
             .map((dom) => {
             dom.zIndex = dom.zIndex || 0;
+            if (dom.doms.length) {
+                dom.doms = this.sortDoms(dom.doms);
+            }
             return dom;
         })
             .sort((a, b) => a.zIndex - b.zIndex);
