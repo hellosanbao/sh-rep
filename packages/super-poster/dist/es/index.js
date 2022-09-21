@@ -676,8 +676,9 @@ var createPoster = {
     sortDoms(doms) {
         return doms
             .map((dom) => {
+            var _a;
             dom.zIndex = dom.zIndex || 0;
-            if (dom.doms.length) {
+            if ((_a = dom.doms) === null || _a === void 0 ? void 0 : _a.length) {
                 dom.doms = this.sortDoms(dom.doms);
             }
             return dom;
@@ -940,8 +941,9 @@ var createHtml = {
     sortDoms(doms) {
         return doms
             .map((dom) => {
+            var _a;
             dom.zIndex = dom.zIndex || 0;
-            if (dom.doms.length) {
+            if ((_a = dom.doms) === null || _a === void 0 ? void 0 : _a.length) {
                 dom.doms = this.sortDoms(dom.doms);
             }
             return dom;

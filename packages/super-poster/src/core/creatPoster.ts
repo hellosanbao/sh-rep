@@ -143,7 +143,7 @@ export default {
     return doms
       .map((dom) => {
         dom.zIndex = dom.zIndex || 0;
-        if (dom.doms.length) {
+        if (dom.doms?.length) {
           dom.doms = this.sortDoms(dom.doms);
         }
         return dom;
