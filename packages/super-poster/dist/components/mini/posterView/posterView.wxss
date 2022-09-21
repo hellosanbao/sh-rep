@@ -1,0 +1,3 @@
+.poster_view-container{
+  position: relative;
+}

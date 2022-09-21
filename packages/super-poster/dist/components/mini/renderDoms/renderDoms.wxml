@@ -1,0 +1,14 @@
+<view>
+  <view wx:for="{{doms}}" wx:for-item="dom" wx:key="styleStr">
+    <image wx:if="{{dom.tag === 'image'}}" src="{{dom.src}}" style="{{dom.styleStr}}" />
+    <view wx:if="{{dom.tag === 'text'}}" style="{{dom.styleStr}}">{{ dom.value }}</view>
+    <view wx:if="{{dom.tag === 'texts'}}" style="{{dom.styleStr}}">
+      <view wx:for="{{dom.doms}}" wx:for-item="text" wx:key="value" style="{{text.styleStr}}">
+        {{ text.value }}
+      </view>
+    </view>
+    <view wx:if="{{dom.tag === 'block' || dom.tag === 'view'}}" style="{{dom.styleStr}}">
+      <renderDom doms="{{dom.doms || []}}" />
+    </view>
+  </view>
+</view>
