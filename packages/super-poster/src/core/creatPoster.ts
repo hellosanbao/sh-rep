@@ -88,6 +88,7 @@ export default {
       width * ins.ratio,
       fontSize * ins.ratio,
     ];
+
     if (textAlign === "center") {
       relX = relX + relWidth / 2;
     } else if (textAlign === "right") {
