@@ -139,13 +139,20 @@ export default {
     ins.ctx.restore();
   },
 
-  async handlerDoms(doms: Doms, config: PosterOptions, ins: any) {
-    doms = doms
+  sortDoms(doms) {
+    return doms
       .map((dom) => {
         dom.zIndex = dom.zIndex || 0;
+        if (dom.doms.length) {
+          dom.doms = this.sortDoms(dom.doms);
+        }
         return dom;
       })
       .sort((a, b) => a.zIndex - b.zIndex);
+  },
+
+  async handlerDoms(doms: Doms, config: PosterOptions, ins: any) {
+    doms = this.sortDoms(doms);
     //并行加载所有图片
     await ins.depImgs(
       doms.filter((d) => d.type === "image").map((d) => (d as PosImage).url)
