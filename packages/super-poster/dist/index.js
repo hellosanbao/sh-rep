@@ -677,14 +677,20 @@ var createPoster = {
             ins.ctx.restore();
         });
     },
+    sortDoms(doms) {
+        return doms
+            .map((dom) => {
+            dom.zIndex = dom.zIndex || 0;
+            if (dom.doms.length) {
+                dom.doms = this.sortDoms(dom.doms);
+            }
+            return dom;
+        })
+            .sort((a, b) => a.zIndex - b.zIndex);
+    },
     handlerDoms(doms, config, ins) {
         return __awaiter(this, void 0, void 0, function* () {
-            doms = doms
-                .map((dom) => {
-                dom.zIndex = dom.zIndex || 0;
-                return dom;
-            })
-                .sort((a, b) => a.zIndex - b.zIndex);
+            doms = this.sortDoms(doms);
             //并行加载所有图片
             yield ins.depImgs(doms.filter((d) => d.type === "image").map((d) => d.url));
             for (let [, dom] of doms.entries()) {
