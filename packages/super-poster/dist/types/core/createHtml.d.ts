@@ -8,7 +8,7 @@ declare const _default: {
     drawRect(v: any, ratio: number, config: PosterOptions): any;
     drawBlock(v: any, ratio: number, config: PosterOptions): any;
     handleDoms(doms: any, config: PosterOptions, pushRoot?: boolean): any;
-    sortDoms(doms: any): any;
+    sortDoms(doms?: any): any;
     parseJson(config?: any): any;
 };
 export default _default;

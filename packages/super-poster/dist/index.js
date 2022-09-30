@@ -701,7 +701,7 @@ var createPoster = {
             ins.drawRoundReact(x, y, width, height, bgColor, borderRadius);
         });
     },
-    sortDoms(doms) {
+    sortDoms(doms = []) {
         return doms
             .map((dom) => {
             var _a;
@@ -983,7 +983,7 @@ var createHtml = {
         }
         return domResultList;
     },
-    sortDoms(doms) {
+    sortDoms(doms = []) {
         return doms
             .map((dom) => {
             var _a;
