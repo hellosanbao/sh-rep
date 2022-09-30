@@ -8,6 +8,7 @@ import {
   PosText,
   PosTextGroup,
   PosBlock,
+  PosRect,
 } from "../types";
 
 export default {
@@ -140,6 +141,19 @@ export default {
     ins.ctx.restore();
   },
 
+  //创建矩形
+  async createRect(dom: PosRect, config: PosterOptions, ins: any) {
+    const {
+      x = 0,
+      y = 0,
+      width = config.width * config.ratio,
+      height = config.height * config.ratio,
+      bgColor = "#fff",
+      borderRadius = 0,
+    } = dom;
+    ins.drawRoundReact(x, y, width, height, bgColor, borderRadius);
+  },
+
   sortDoms(doms) {
     return doms
       .map((dom) => {
@@ -160,6 +174,9 @@ export default {
     );
     for (let [, dom] of doms.entries()) {
       switch (dom.type) {
+        case "rect":
+          await this.createRect(dom, config, ins);
+          break;
         case "image":
           await this.createImages(dom, config, ins);
           break;
@@ -180,11 +197,34 @@ export default {
 
   async draw(config: PosterOptions, depImgs = []) {
     config = deepClone(config);
-    let { width, height, ratio = 1, posterFileName, doms = [] } = config;
+    let {
+      width,
+      height,
+      ratio = 1,
+      posterFileName = "canvas-poster",
+      doms = [],
+    } = config;
     let [relWidth, relHeight] = [width * ratio, height * ratio];
-    await ins.getContext("#posterCanvas", relWidth, relHeight, ratio);
+    await ins.getContext(
+      "#posterCanvas",
+      relWidth,
+      relHeight,
+      ratio,
+      config.useCanvas || "auto",
+      config.componentInstance
+    );
     await ins.depImgs(depImgs);
     ins.ctx.clearRect(0, 0, relWidth, relHeight);
+    //创建背景
+    if (config.bgColor) {
+      this.createRect(
+        {
+          bgColor: config.bgColor,
+        },
+        config,
+        ins
+      );
+    }
     await this.handlerDoms(doms, config, ins);
 
     //获取图片本地链接

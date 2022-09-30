@@ -21,7 +21,14 @@ export default class CreateOffScreenCanvas {
     this.fileList = new Set(); // tempFile 文件集合
     this.filePathPrefix = wx.env.USER_DATA_PATH + "/pic"; //存储临时文件的路径前缀
   }
-  async getContext(id: string, width: number, height: number, ratio: number) {
+  async getContext(
+    id: string,
+    width: number,
+    height: number,
+    ratio: number,
+    useCanvas = "auto",
+    componentInstance
+  ) {
     if (ratio) this.ratio = ratio; // 放大比例
     if (width) this.width = width * ratio;
     if (height) this.height = height * ratio;
@@ -31,12 +38,25 @@ export default class CreateOffScreenCanvas {
       height: this.height,
     });
     this.ctx = this.canvas.getContext("2d");
-    let isCanvasComponent =
-      this.canvas.width != this.width || this.canvas.height != this.height;
+    let isCanvasComponent = true;
+    if (useCanvas == "auto") {
+      isCanvasComponent =
+        this.canvas.width != this.width || this.canvas.height != this.height;
+    } else if (useCanvas == "canvas") {
+      isCanvasComponent = true;
+    } else {
+      isCanvasComponent = false;
+    }
+
     if (isCanvasComponent) {
       console.log("------------------采用canvas组件-----------------");
       return new Promise((resolve, reject) => {
-        const query = wx.createSelectorQuery();
+        let query = null;
+        if (componentInstance) {
+          query = wx.createSelectorQuery().in(componentInstance);
+        } else {
+          query = wx.createSelectorQuery();
+        }
         query
           .select(id)
           .fields({
@@ -293,9 +313,8 @@ export default class CreateOffScreenCanvas {
    */
   drawDiffTexts = (textArr: any[], y: number, startObj: any) => {
     let widthList = textArr.map((item) => {
-      this.ctx.font = `${item.weight || "normal"} ${
-        item.size * this.ratio
-      }px normal`;
+      this.ctx.font = `${item.weight || "normal"} ${item.size *
+        this.ratio}px normal`;
       if (item.lineWidth) {
         return (
           this.ctx.measureText(item.txt).width + item.lineWidth * 2 * this.ratio

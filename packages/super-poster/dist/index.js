@@ -268,7 +268,8 @@ class CreateOffScreenCanvas {
          */
         this.drawDiffTexts = (textArr, y, startObj) => {
             let widthList = textArr.map((item) => {
-                this.ctx.font = `${item.weight || "normal"} ${item.size * this.ratio}px normal`;
+                this.ctx.font = `${item.weight || "normal"} ${item.size *
+                    this.ratio}px normal`;
                 if (item.lineWidth) {
                     return (this.ctx.measureText(item.txt).width + item.lineWidth * 2 * this.ratio);
                 }
@@ -487,7 +488,7 @@ class CreateOffScreenCanvas {
         this.fileList = new Set(); // tempFile 文件集合
         this.filePathPrefix = wx.env.USER_DATA_PATH + "/pic"; //存储临时文件的路径前缀
     }
-    getContext(id, width, height, ratio) {
+    getContext(id, width, height, ratio, useCanvas = "auto", componentInstance) {
         return __awaiter(this, void 0, void 0, function* () {
             if (ratio)
                 this.ratio = ratio; // 放大比例
@@ -501,11 +502,27 @@ class CreateOffScreenCanvas {
                 height: this.height,
             });
             this.ctx = this.canvas.getContext("2d");
-            let isCanvasComponent = this.canvas.width != this.width || this.canvas.height != this.height;
+            let isCanvasComponent = true;
+            if (useCanvas == "auto") {
+                isCanvasComponent =
+                    this.canvas.width != this.width || this.canvas.height != this.height;
+            }
+            else if (useCanvas == "canvas") {
+                isCanvasComponent = true;
+            }
+            else {
+                isCanvasComponent = false;
+            }
             if (isCanvasComponent) {
                 console.log("------------------采用canvas组件-----------------");
                 return new Promise((resolve, reject) => {
-                    const query = wx.createSelectorQuery();
+                    let query = null;
+                    if (componentInstance) {
+                        query = wx.createSelectorQuery().in(componentInstance);
+                    }
+                    else {
+                        query = wx.createSelectorQuery();
+                    }
                     query
                         .select(id)
                         .fields({
@@ -677,6 +694,13 @@ var createPoster = {
             ins.ctx.restore();
         });
     },
+    //创建矩形
+    createRect(dom, config, ins) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { x = 0, y = 0, width = config.width * config.ratio, height = config.height * config.ratio, bgColor = "#fff", borderRadius = 0, } = dom;
+            ins.drawRoundReact(x, y, width, height, bgColor, borderRadius);
+        });
+    },
     sortDoms(doms) {
         return doms
             .map((dom) => {
@@ -696,6 +720,9 @@ var createPoster = {
             yield ins.depImgs(doms.filter((d) => d.type === "image").map((d) => d.url));
             for (let [, dom] of doms.entries()) {
                 switch (dom.type) {
+                    case "rect":
+                        yield this.createRect(dom, config, ins);
+                        break;
                     case "image":
                         yield this.createImages(dom, config, ins);
                         break;
@@ -715,11 +742,17 @@ var createPoster = {
     draw(config, depImgs = []) {
         return __awaiter(this, void 0, void 0, function* () {
             config = deepClone(config);
-            let { width, height, ratio = 1, posterFileName, doms = [] } = config;
+            let { width, height, ratio = 1, posterFileName = "canvas-poster", doms = [], } = config;
             let [relWidth, relHeight] = [width * ratio, height * ratio];
-            yield ins.getContext("#posterCanvas", relWidth, relHeight, ratio);
+            yield ins.getContext("#posterCanvas", relWidth, relHeight, ratio, config.useCanvas || "auto", config.componentInstance);
             yield ins.depImgs(depImgs);
             ins.ctx.clearRect(0, 0, relWidth, relHeight);
+            //创建背景
+            if (config.bgColor) {
+                this.createRect({
+                    bgColor: config.bgColor,
+                }, config, ins);
+            }
             yield this.handlerDoms(doms, config, ins);
             //获取图片本地链接
             function getTempFilePath() {
@@ -833,7 +866,11 @@ var createHtml = {
             delete obj.style["border-radius"];
             let polygon = v.clip.map((v) => {
                 let formatV = [`${(v[0] - x) * ratio}rpx`, `${(v[1] - y) * ratio}rpx`];
-                return formatV.join().split(",").join(" ").toString();
+                return formatV
+                    .join()
+                    .split(",")
+                    .join(" ")
+                    .toString();
             });
             obj.style["clip-path"] = `polygon(${polygon})`;
             //绘制多边形边框
@@ -863,7 +900,7 @@ var createHtml = {
         }
     },
     drawRect(v, ratio, config) {
-        const { borderRadius = [], x = 0, y = 0, width = config.width, height = config.height, borderWidth = 0, borderColor = "#000", rotate = 0, zIndex, } = v;
+        const { borderRadius = [], x = 0, y = 0, width = config.width, height = config.height, borderWidth = 0, borderColor = "none", bgColor = "#fff", rotate = 0, zIndex, } = v;
         let obj = {};
         obj.tag = "view";
         obj.style = {
@@ -875,14 +912,18 @@ var createHtml = {
             "text-shadow": `0 0 ${borderWidth * ratio}rpx ${borderColor}`,
             transform: `rotate(${rotate}deg)`,
             "border-radius": borderRadius.reduce((tol, cur) => tol + (cur + "rpx "), ""),
-            background: "#000",
+            background: bgColor,
             zIndex,
         };
         if (v.hasOwnProperty("clip")) {
             delete obj.style["border-radius"];
             let polygon = v.clip.map((v) => {
                 let formatV = [`${(v[0] - x) * ratio}rpx`, `${(v[1] - y) * ratio}rpx`];
-                return formatV.join().split(",").join(" ").toString();
+                return formatV
+                    .join()
+                    .split(",")
+                    .join(" ")
+                    .toString();
             });
             obj.style["clip-path"] = `polygon(${polygon})`;
         }
@@ -957,7 +998,12 @@ var createHtml = {
     parseJson(config = {}) {
         config = deepClone(config);
         this.domResultList = [];
-        const { doms } = config;
+        const { doms, displayWidth, width } = config;
+        if (config.bgColor) {
+            this.domResultList.push(this.drawRect({
+                bgColor: config.bgColor,
+            }, displayWidth / width, config));
+        }
         this.handleDoms(this.sortDoms(doms), config);
         return this.domResultList;
     },

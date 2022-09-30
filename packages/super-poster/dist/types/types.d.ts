@@ -78,8 +78,17 @@ export interface PosBlock extends Base {
     translate: [number, number];
     doms: Doms;
 }
-export declare type Dom = PosText | PosImage | PosTextGroup | PosBlock;
-export declare type Doms = Array<PosText | PosImage | PosTextGroup | PosBlock>;
+export interface PosRect extends Base {
+    type: "rect";
+    /**背景色 */
+    bgColor: String;
+    /**圆角 */
+    borderRadius: Array<number> | number;
+    /**高度 */
+    height?: number;
+}
+export declare type Dom = PosText | PosImage | PosTextGroup | PosBlock | PosRect;
+export declare type Doms = Array<PosText | PosImage | PosTextGroup | PosBlock | PosRect>;
 export interface PosterOptions {
     /**画布宽度 */
     width: number;
@@ -91,6 +100,12 @@ export interface PosterOptions {
     ratio: number;
     /**生成海报文件名 */
     posterFileName: string | number;
+    /**背景色 */
+    bgColor: String;
+    /**渲染模式 */
+    useCanvas: "auto" | "canvas" | "offscreenCanvas";
+    /**若在组件中调用，则需要传入组件实例 */
+    componentInstance: any;
     doms: Doms;
 }
 export declare function getPoster(options: PosterOptions): {
@@ -99,7 +114,7 @@ export declare function getPoster(options: PosterOptions): {
     img: string;
 };
 export interface DomNode {
-    tag: "image" | "text" | "texts" | "view" | "block";
+    tag: "image" | "text" | "texts" | "view" | "block" | "rect";
     src?: string;
     styleStr: string;
     value?: string;

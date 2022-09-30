@@ -135,7 +135,11 @@ export default {
       delete obj.style["border-radius"];
       let polygon = v.clip.map((v: any) => {
         let formatV = [`${(v[0] - x) * ratio}rpx`, `${(v[1] - y) * ratio}rpx`];
-        return formatV.join().split(",").join(" ").toString();
+        return formatV
+          .join()
+          .split(",")
+          .join(" ")
+          .toString();
       });
       obj.style["clip-path"] = `polygon(${polygon})`;
       //绘制多边形边框
@@ -171,7 +175,8 @@ export default {
       width = config.width,
       height = config.height,
       borderWidth = 0,
-      borderColor = "#000",
+      borderColor = "none",
+      bgColor = "#fff",
       rotate = 0,
       zIndex,
     } = v;
@@ -189,14 +194,18 @@ export default {
         (tol: any, cur: any) => tol + (cur + "rpx "),
         ""
       ),
-      background: "#000",
+      background: bgColor,
       zIndex,
     };
     if (v.hasOwnProperty("clip")) {
       delete obj.style["border-radius"];
       let polygon = v.clip.map((v: any) => {
         let formatV = [`${(v[0] - x) * ratio}rpx`, `${(v[1] - y) * ratio}rpx`];
-        return formatV.join().split(",").join(" ").toString();
+        return formatV
+          .join()
+          .split(",")
+          .join(" ")
+          .toString();
       });
       obj.style["clip-path"] = `polygon(${polygon})`;
     }
@@ -284,7 +293,18 @@ export default {
   parseJson(config: any = {}) {
     config = deepClone(config);
     this.domResultList = [];
-    const { doms } = config;
+    const { doms, displayWidth, width } = config;
+    if (config.bgColor) {
+      this.domResultList.push(
+        this.drawRect(
+          {
+            bgColor: config.bgColor,
+          },
+          displayWidth / width,
+          config
+        )
+      );
+    }
     this.handleDoms(this.sortDoms(doms), config);
     return this.domResultList;
   },

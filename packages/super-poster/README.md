@@ -110,14 +110,16 @@ getPoster(json).then((res) => {
 
 ### config
 
-| 参数名         | 类型   | 参数描述                  | 默认值     | 是否必传 |
-| -------------- | ------ | ------------------------- | ---------- | -------- |
-| width          | number | 画布宽度                  | -          | 是       |
-| height         | number | 画布高度                  | -          | 是       |
-| displayWidth   | number | dom 展示的宽度            | -          | 是       |
-| ratio          | number | 画布缩放比                | 1          | 否       |
-| posterFileName | string | 海报缓存的文件名          | Date.now() | 否       |
-| doms           | Array  | 海报元素列表[Doms](#doms) | -          | 是       |
+| 参数名            | 类型                          | 参数描述                           | 默认值     | 是否必传 |
+| ----------------- | ----------------------------- | ---------------------------------- | ---------- | -------- |
+| width             | number                        | 画布宽度                           | -          | 是       |
+| height            | number                        | 画布高度                           | -          | 是       |
+| displayWidth      | number                        | dom 展示的宽度                     | -          | 是       |
+| ratio             | number                        | 画布缩放比                         | 1          | 否       |
+| posterFileName    | string                        | 海报缓存的文件名                   | Date.now() | 否       |
+| useCanvas         | auto、canvas、offscreenCanvas | 渲染模式                           | 'auto'     | 否       |
+| componentInstance | any                           | 若在组件中调用，则需要传入组件实例 | -          | 否       |
+| doms              | Array                         | 海报元素列表[Doms](#doms)          | -          | 是       |
 
 ## doms
 
@@ -248,6 +250,20 @@ dom 一共有：text、texts、image、block 这几种类型
     zIndex: 2,
 },
 ```
+
+### rect
+
+矩形
+
+| 参数名       | 类型          | 参数描述        | 默认值      | 是否必传 |
+| ------------ | ------------- | --------------- | ----------- | -------- |
+| type         | string        | dom 类型        | 固定值 rect | 是       |
+| x            | number        | 起点位置 x 坐标 | 0           | 否       |
+| y            | number        | 起点位置 y 坐标 | 0           | 否       |
+| width        | number        | 宽度            | -           | 否       |
+| height       | number        | 高度            | -           | 否       |
+| bgColor      | string        | 背景色          | -           | 否       |
+| borderRadius | Array<number> | number          | 圆角        | -        | 否 |
 
 ### block
 

@@ -7,7 +7,7 @@ export default class CreateOffScreenCanvas {
     canvas: any;
     ctx: any;
     constructor(width?: number, height?: number, ratio?: number);
-    getContext(id: string, width: number, height: number, ratio: number): Promise<unknown>;
+    getContext(id: string, width: number, height: number, ratio: number, useCanvas: string, componentInstance: any): Promise<unknown>;
     drawReact: (x: number, y: number, w: number, h: number, style: string) => void;
     /**
      * 绘制圆角矩形
