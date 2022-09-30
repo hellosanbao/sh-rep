@@ -154,7 +154,7 @@ export default {
     ins.drawRoundReact(x, y, width, height, bgColor, borderRadius);
   },
 
-  sortDoms(doms) {
+  sortDoms(doms = []) {
     return doms
       .map((dom) => {
         dom.zIndex = dom.zIndex || 0;

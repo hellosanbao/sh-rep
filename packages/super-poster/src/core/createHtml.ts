@@ -279,7 +279,7 @@ export default {
     }
     return domResultList;
   },
-  sortDoms(doms: any) {
+  sortDoms(doms: any = []) {
     return doms
       .map((dom: any) => {
         dom.zIndex = dom.zIndex || 0;
