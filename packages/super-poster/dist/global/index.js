@@ -830,7 +830,6 @@ var superPoster = (function (exports) {
                 return dom;
             });
             obj.styleStr = this.parseStyle(obj.style);
-            console.log(obj);
             return obj;
         },
         drawImage(v, ratio, config) {
