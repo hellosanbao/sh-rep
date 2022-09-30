@@ -86,7 +86,6 @@ export default {
       return dom;
     });
     obj.styleStr = this.parseStyle(obj.style);
-    console.log(obj);
     return obj;
   },
   drawImage(v: any, ratio: number, config: PosterOptions) {
