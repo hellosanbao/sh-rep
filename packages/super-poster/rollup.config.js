@@ -48,6 +48,16 @@ export default {
           src: ["src/components"],
           dest: ["dist", "dist/es"],
         },
+        //将产物打到demo中，用于调试
+        {
+          src: ["dist"],
+          dest: [
+            path.resolve(
+              __dirname,
+              "../../demo/uni-demo/src/@local_modules/super-poster"
+            ),
+          ],
+        },
       ],
     }),
   ],

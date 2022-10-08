@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm --filter=@sh-rep/* run build",
-    "publish": "lerna publish"
+    "publish": "lerna publish",
+    "dev:super-poster": "pnpm --filter=@sh-rep/super-poster run dev"
   },
   "keywords": [],
   "author": "",
