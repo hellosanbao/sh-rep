@@ -35,6 +35,7 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@guanghechen/rollup-plugin-copy": "^2.1.0"
+    "@guanghechen/rollup-plugin-copy": "^2.1.0",
+    "tslib": "^2.4.0"
   }
 }

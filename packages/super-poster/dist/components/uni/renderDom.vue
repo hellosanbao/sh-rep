@@ -30,6 +30,6 @@ export default {
   components: {
     renderDom,
   },
-  mounted() {},
+  mounted() { },
 };
 </script>

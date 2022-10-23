@@ -10,13 +10,13 @@
   </div>
 </template>
 <script>
-import { getPreview } from "@sh-rep/super-poster";
+import { getPreview } from "../../index";
 import renderDoms from "./renderDom.vue";
 export default {
   props: {
     json: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
   },
   components: {
