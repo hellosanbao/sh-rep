@@ -1,6 +1,6 @@
 {
   "name": "@sh-rep/super-poster",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "",
   "miniprogram": "dist",
   "main": "dist/index.js",
