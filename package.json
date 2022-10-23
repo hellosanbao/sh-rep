@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm --filter=@sh-rep/* run build",
-    "publish": "lerna publish",
+    "deploy": "pnpm publish -r",
     "dev:super-poster": "pnpm --filter=@sh-rep/super-poster run dev"
   },
   "keywords": [],
@@ -16,5 +16,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@changesets/cli": "^2.25.0"
+  }
 }

@@ -1,4 +1,4 @@
-import { getPreview } from "@sh-rep/super-poster";
+import { getPreview } from "../../../index";
 Component({
   properties: {
     json: {
