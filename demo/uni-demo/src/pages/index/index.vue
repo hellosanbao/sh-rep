@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import PosterView from "../../@local_modules/super-poster/dist/components/uni/posterView";
-import { getPoster } from "../../@local_modules/super-poster/dist";
+import PosterView from "../../local_lib/super-poster/dist/components/uni/posterView";
+import { getPoster } from "../../local_lib/super-poster/dist";
 export default {
   data() {
     return {
